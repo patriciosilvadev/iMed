@@ -17,10 +17,10 @@ class UserController {
         'INSERT INTO users (name, email) VALUES ($1, $2) RETURNING *',
         [name, email]
       );
-      response.status(201).send(`User added with ID: ${res.rows[0].id}`);
+      response.status(201).json({ message: 'User added', id: res.rows[0].id });
     } catch (err) {
       // throw err;
-      response.status(400).send('ai n filhote');
+      response.status(400).json({ message: 'ai n filhote' });
     }
   }
 }
