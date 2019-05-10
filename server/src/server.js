@@ -1,5 +1,6 @@
 const express = require('express');
 const routes = require('./routes');
+const cors = require('cors');
 
 class App {
   constructor() {
@@ -17,6 +18,7 @@ class App {
       })
     );
     this.express.use(express.json());
+    this.express.use(cors());
   }
 
   views() {}
