@@ -1,13 +1,25 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import CreatePatient from '@/components/views/CreatePatient';
-import EditPatient from '@/components/views/EditPatient';
+import Index from '@/views/Index';
+import PatientArea from '@/views/PatientArea';
+import CreatePatient from '@/views/CreatePatient';
+import EditPatient from '@/views/EditPatient';
 
 Vue.use(Router);
 
 export default new Router({
   mode: 'history',
   routes: [
+    {
+      path: '/',
+      name: 'Index',
+      component: Index
+    },
+    {
+      path: '/patient-area',
+      name: 'PatientArea',
+      component: PatientArea
+    },
     {
       path: '/create-patient',
       name: 'CreatePatient',

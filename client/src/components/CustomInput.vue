@@ -11,5 +11,20 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+.custom-input {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  label {
+    color: white;
+    font-weight: bold;
+  }
+
+  input {
+    width: 50%;
+    padding: 5px;
+  }
+}
 </style>

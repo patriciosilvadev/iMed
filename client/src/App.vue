@@ -1,6 +1,8 @@
 <template>
   <main id="app">
-    <router-view/>
+    <div class="container">
+      <router-view/>
+    </div>
   </main>
 </template>
 
@@ -12,6 +14,10 @@ export default {
 
 <style>
 #app {
-  /* background: #9b65e6; */
+  background: #9b65e6;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 100vh;
 }
 </style>
