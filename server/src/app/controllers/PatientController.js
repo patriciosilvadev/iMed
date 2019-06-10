@@ -13,7 +13,7 @@ class PatientController {
   async getPatient(request, response) {
     const { cpf } = request.params;
     try {
-      const res = await pool.query('SELECT * FROM patient WHERE cpf = $1', [
+      const res = await pool.query('SELECT * FROM person WHERE cpf = $1', [
         cpf
       ]);
       if (res !== undefined) response.status(200).json(res.rows[0]);
