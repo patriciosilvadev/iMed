@@ -3,7 +3,7 @@ const controllers = require('./app/controllers');
 const routes = express.Router();
 // const path = require('path');
 
-routes.get('/create-tables', controllers.TablesController.insertDoctor);
+routes.get('/create-tables', controllers.TablesController.createProcedure);
 
 routes.get('/patient', controllers.PatientController.getPatients);
 routes.post('/patient', controllers.PatientController.createPatient);

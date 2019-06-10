@@ -95,6 +95,39 @@ class TablesController {
     }
   }
 
+  async createProcedure(request, response) {
+    const procedure = `CREATE TABLE IF NOT EXISTS
+      Procedure (
+        procedureid SERIAL PRIMARY KEY UNIQUE,
+        procedurename varchar(50),
+        path varchar(50)
+      )`;
+    try {
+      const res = await pool.query(procedure);
+      response.status(200).json(res);
+    } catch (err) {
+      console.log(err);
+      response.status(500).json(err);
+    }
+  }
+
+  async createProntuario(request, response) {
+    const prontuario = `CREATE TABLE IF NOT EXISTS
+      Prontuario (
+        prontuarioid SERIAL PRIMARY KEY UNIQUE,
+        temperatura real,
+        pressao real,
+        sintomas varchar(200)
+      )`;
+    try {
+      const res = await pool.query(prontuario);
+      response.status(200).json(res);
+    } catch (err) {
+      console.log(err);
+      response.status(500).json(err);
+    }
+  }
+
   async insertPatient(request, response) {
     const transaction = `
     BEGIN;
@@ -118,6 +151,42 @@ class TablesController {
     INSERT INTO Person (personid, cpf, personname, birth, sex) VALUES (DEFAULT, 456, 'joao', '03/10/1993', 'M');
     INSERT INTO Employee (setor, salario, employeeid) VALUES ('IMD', '2500', (SELECT personid FROM Person WHERE cpf='456'));
     INSERT INTO Doctor (crm, especialidade, doctorid) VALUES ('999', 'Pediatra', (SELECT employeeid FROM Employee, Person p WHERE p.cpf='456' and employeeid = p.personid));
+    COMMIT;
+    `;
+    try {
+      const res = await pool.query(transaction);
+      console.log(res);
+      response.status(200).json(res[1].rows);
+    } catch (err) {
+      console.log(err);
+      response.status(500).json(err);
+    }
+  }
+
+  async insertNurse(request, response) {
+    const transaction = `
+    BEGIN;
+    INSERT INTO Person (personid, cpf, personname, birth, sex) VALUES (DEFAULT, 789, 'joao', '03/10/1993', 'M');
+    INSERT INTO Employee (setor, salario, employeeid) VALUES ('IMD', '2500', (SELECT personid FROM Person WHERE cpf='789'));
+    INSERT INTO Nurse (cofen, nurseid) VALUES ('999', (SELECT employeeid FROM Employee, Person p WHERE p.cpf='789' and employeeid = p.personid));
+    COMMIT;
+    `;
+    try {
+      const res = await pool.query(transaction);
+      console.log(res);
+      response.status(200).json(res[1].rows);
+    } catch (err) {
+      console.log(err);
+      response.status(500).json(err);
+    }
+  }
+
+  async insertReceptionist(request, response) {
+    const transaction = `
+    BEGIN;
+    INSERT INTO Person (personid, cpf, personname, birth, sex) VALUES (DEFAULT, 9999, 'joao', '03/10/1993', 'M');
+    INSERT INTO Employee (setor, salario, employeeid) VALUES ('IMD', '2500', (SELECT personid FROM Person WHERE cpf='9999'));
+    INSERT INTO Receptionist (setor, receptionistid) VALUES ('DIMAP', (SELECT employeeid FROM Employee, Person p WHERE p.cpf='9999' and employeeid = p.personid));
     COMMIT;
     `;
     try {
