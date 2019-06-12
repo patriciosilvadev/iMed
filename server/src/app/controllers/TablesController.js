@@ -22,7 +22,7 @@ class TablesController {
     const patient = `CREATE TABLE IF NOT EXISTS
       Patient (
         healthPlan varchar(20),
-	      patientid int REFERENCES Person(personid)
+	      patientid int UNIQUE REFERENCES Person(personid)
       )`;
     try {
       const res = await pool.query(patient);
@@ -54,7 +54,7 @@ class TablesController {
       Doctor (
         crm varchar(10) UNIQUE,
         especialidade varchar(100),
-	      doctorid int REFERENCES Employee(employeeid)
+	      doctorid int UNIQUE REFERENCES Employee(employeeid)
       )`;
     try {
       const res = await pool.query(doctor);
@@ -69,7 +69,7 @@ class TablesController {
     const nurse = `CREATE TABLE IF NOT EXISTS
       Nurse (
         cofen varchar(10) UNIQUE,
-	      nurseid int REFERENCES Employee(employeeid)
+	      nurseid int UNIQUE REFERENCES Employee(employeeid)
       )`;
     try {
       const res = await pool.query(nurse);
@@ -84,26 +84,10 @@ class TablesController {
     const receptionist = `CREATE TABLE IF NOT EXISTS
       Receptionist (
         setor varchar(10),
-	      receptionistid int REFERENCES Employee(employeeid)
+	      receptionistid int UNIQUE REFERENCES Employee(employeeid)
       )`;
     try {
       const res = await pool.query(receptionist);
-      response.status(200).json(res);
-    } catch (err) {
-      console.log(err);
-      response.status(500).json(err);
-    }
-  }
-
-  async createProcedure(request, response) {
-    const procedure = `CREATE TABLE IF NOT EXISTS
-      Procedure (
-        procedureid SERIAL PRIMARY KEY UNIQUE,
-        procedurename varchar(50),
-        path varchar(50)
-      )`;
-    try {
-      const res = await pool.query(procedure);
       response.status(200).json(res);
     } catch (err) {
       console.log(err);
@@ -115,6 +99,7 @@ class TablesController {
     const prontuario = `CREATE TABLE IF NOT EXISTS
       Prontuario (
         prontuarioid SERIAL PRIMARY KEY UNIQUE,
+        patientid int REFERENCES Patient(patientid),
         temperatura real,
         pressao real,
         sintomas varchar(200)
@@ -128,11 +113,48 @@ class TablesController {
     }
   }
 
+  async createTreatment(request, response) {
+    const treatment = `CREATE TABLE IF NOT EXISTS
+      Treatment (
+        treatmentid SERIAL PRIMARY KEY UNIQUE,
+        doctorid int REFERENCES Doctor(doctorid),
+        nurseid int REFERENCES Nurse(nurseid),
+        receptionistid int REFERENCES Receptionist(receptionistid),
+        patientid int REFERENCES Patient(patientid),
+        datainicio date,
+        datafim date
+      )`;
+    try {
+      const res = await pool.query(treatment);
+      response.status(200).json(res);
+    } catch (err) {
+      console.log(err);
+      response.status(500).json(err);
+    }
+  }
+
+  async createProcedure(request, response) {
+    const procedure = `CREATE TABLE IF NOT EXISTS
+      Procedure (
+        procedureid SERIAL PRIMARY KEY UNIQUE,
+        patientid int REFERENCES Patient(patientid),
+        procedurename varchar(50),
+        path varchar(50)
+      )`;
+    try {
+      const res = await pool.query(procedure);
+      response.status(200).json(res);
+    } catch (err) {
+      console.log(err);
+      response.status(500).json(err);
+    }
+  }
+
   async insertPatient(request, response) {
     const transaction = `
     BEGIN;
-    INSERT INTO Person (personid, cpf, personname, birth, sex) VALUES (DEFAULT, 123, 'joao', '03/10/1993', 'M');
-    INSERT INTO Patient (healthplan, patientid) VALUES ('Unimed', (SELECT personid FROM Person WHERE cpf='123'));
+    INSERT INTO Person (personid, cpf, personname, birth, sex) VALUES (DEFAULT, 2424, 'emanuel', '03/10/1993', 'M');
+    INSERT INTO Patient (healthplan, patientid) VALUES ('Unimed', (SELECT personid FROM Person WHERE cpf='2424'));
     COMMIT;
     `;
     try {
@@ -184,10 +206,67 @@ class TablesController {
   async insertReceptionist(request, response) {
     const transaction = `
     BEGIN;
-    INSERT INTO Person (personid, cpf, personname, birth, sex) VALUES (DEFAULT, 9999, 'joao', '03/10/1993', 'M');
-    INSERT INTO Employee (setor, salario, employeeid) VALUES ('IMD', '2500', (SELECT personid FROM Person WHERE cpf='9999'));
-    INSERT INTO Receptionist (setor, receptionistid) VALUES ('DIMAP', (SELECT employeeid FROM Employee, Person p WHERE p.cpf='9999' and employeeid = p.personid));
+    INSERT INTO Person (personid, cpf, personname, birth, sex) VALUES (DEFAULT, 999, 'joao', '03/10/1993', 'M');
+    INSERT INTO Employee (setor, salario, employeeid) VALUES ('IMD', '2500', (SELECT personid FROM Person WHERE cpf='999'));
+    INSERT INTO Receptionist (setor, receptionistid) VALUES ('DIMAP', (SELECT employeeid FROM Employee, Person p WHERE p.cpf='999' and employeeid = p.personid));
     COMMIT;
+    `;
+    try {
+      const res = await pool.query(transaction);
+      console.log(res);
+      response.status(200).json(res[1].rows);
+    } catch (err) {
+      console.log(err);
+      response.status(500).json(err);
+    }
+  }
+
+  async insertProntuario(request, response) {
+    const transaction = `
+    INSERT INTO Prontuario (prontuarioid, patientid, temperatura, pressao, sintomas) VALUES (DEFAULT, (SELECT personid FROM Person WHERE cpf='2424'), 39, 17/9, 'Dengue');
+    `;
+    try {
+      const res = await pool.query(transaction);
+      console.log(res);
+      response.status(200).json(res[1].rows);
+    } catch (err) {
+      console.log(err);
+      response.status(500).json(err);
+    }
+  }
+
+  async insertAtendimento(request, response) {
+    const transaction = `
+    INSERT INTO Treatment (treatmentid, doctorid, nurseid, receptionistid, patientid, datainicio, datafim) VALUES 
+      (
+        DEFAULT, 
+        (SELECT personid FROM Person WHERE cpf='456'),
+        (SELECT personid FROM Person WHERE cpf='789'),
+        (SELECT personid FROM Person WHERE cpf='999'),
+        (SELECT personid FROM Person WHERE cpf='123'),
+        '12/06/2019',
+        '12/06/2019'
+      );
+    `;
+    try {
+      const res = await pool.query(transaction);
+      console.log(res);
+      response.status(200).json(res[1].rows);
+    } catch (err) {
+      console.log(err);
+      response.status(500).json(err);
+    }
+  }
+
+  async insertProcedure(request, response) {
+    const transaction = `
+    INSERT INTO Procedure (procedureid, patientid, procedurename, path) VALUES 
+      (
+        DEFAULT, 
+        (SELECT personid FROM Person WHERE cpf='123'),
+        'Raio X',
+        'C:/Arquivos/Procedimentos'
+      );
     `;
     try {
       const res = await pool.query(transaction);
