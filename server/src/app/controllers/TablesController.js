@@ -100,6 +100,7 @@ class TablesController {
       Prontuario (
         prontuarioid SERIAL PRIMARY KEY UNIQUE,
         patientid int REFERENCES Patient(patientid),
+        doctorid int REFERENCES Doctor(doctorid),
         temperatura real,
         pressao real,
         sintomas varchar(200)
@@ -137,7 +138,6 @@ class TablesController {
     const procedure = `CREATE TABLE IF NOT EXISTS
       Procedure (
         procedureid SERIAL PRIMARY KEY UNIQUE,
-        patientid int REFERENCES Patient(patientid),
         procedurename varchar(50),
         path varchar(50)
       )`;
@@ -223,7 +223,7 @@ class TablesController {
 
   async insertProntuario(request, response) {
     const transaction = `
-    INSERT INTO Prontuario (prontuarioid, patientid, temperatura, pressao, sintomas) VALUES (DEFAULT, (SELECT personid FROM Person WHERE cpf='2424'), 39, 17/9, 'Dengue');
+    INSERT INTO Prontuario (prontuarioid, patientid, doctorid, temperatura, pressao, sintomas) VALUES (DEFAULT, (SELECT personid FROM Person WHERE cpf='2424'), (SELECT personid FROM Person WHERE cpf='456'), 39, 17/9, 'Dengue');
     `;
     try {
       const res = await pool.query(transaction);
