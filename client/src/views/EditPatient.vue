@@ -1,5 +1,5 @@
 <template>
-  <div class="create-patient">
+  <div class="edit-patient">
     <div class="container">
       <h1>Editar paciente</h1>
       <form @submit.prevent="handleSearch">
@@ -15,56 +15,26 @@
         <custom-input
           :name="'nome'"
           :label="'Nome'"
-          :value="patient.nome"
-          @inputValue="patient.nome = $event.value"
-        />
-        <custom-input
-          :name="'nome_mae'"
-          :label="'Nome da mãe'"
-          :value="patient.nome_mae"
-          @inputValue="patient.nome_mae = $event.value"
-        />
-        <custom-input
-          :name="'nome_pai'"
-          :label="'Nome do pai'"
-          :value="patient.nome_pai"
-          @inputValue="patient.nome_pai = $event.value"
+          :value="patient.personname"
+          @inputValue="patient.personname = $event.value"
         />
         <custom-input
           :name="'nascimento'"
           :label="'Data de nascimento'"
-          :value="patient.nascimento"
-          @inputValue="patient.nascimento = $event.value"
-        />
-        <custom-input
-          :name="'rg_numero'"
-          :label="'Número do RG'"
-          :value="patient.rg_numero"
-          @inputValue="patient.rg_numero = $event.value"
-        />
-        <custom-input
-          :name="'rg_orgao'"
-          :label="'Órgão emissor'"
-          :value="patient.rg_orgao"
-          @inputValue="patient.rg_orgao = $event.value"
-        />
-        <custom-input
-          :name="'rg_data'"
-          :label="'Data de emissão'"
-          :value="patient.rg_data"
-          @inputValue="patient.rg_data = $event.value"
-        />
-        <custom-input
-          :name="'idade'"
-          :label="'Idade'"
-          :value="patient.idade"
-          @inputValue="patient.idade = $event.value"
+          :value="patient.birth"
+          @inputValue="patient.birth = $event.value"
         />
         <custom-input
           :name="'sexo'"
           :label="'Sexo'"
-          :value="patient.sexo"
-          @inputValue="patient.sexo = $event.value"
+          :value="patient.sex"
+          @inputValue="patient.sex = $event.value"
+        />
+        <custom-input
+          :name="'plano'"
+          :label="'Plano'"
+          :value="patient.healthplan"
+          @inputValue="patient.healthplan = $event.value"
         />
         <custom-input
           :name="'cpf'"
@@ -72,7 +42,15 @@
           :value="patient.cpf"
           @inputValue="patient.cpf = $event.value"
         />
-        <button type="submit">Editar</button>
+        <custom-input
+          :name="'status'"
+          :label="'Status'"
+          :value="patient.status"
+          @inputValue="patient.status = $event.value"
+        />
+        <div class="buttons">
+          <button type="submit">Editar</button>
+        </div>
       </form>
     </div>
   </div>
@@ -90,16 +68,12 @@ export default {
   data() {
     return {
       patient: {
-        nome: "",
-        nome_mae: "",
-        nome_pai: "",
-        nascimento: "",
-        rg_numero: "",
-        rg_orgao: "",
-        rg_data: "",
-        idade: "",
-        sexoo: "",
-        cpf: ""
+        personname: "",
+        birth: "",
+        sex: "",
+        cpf: "",
+        healthplan: "",
+        patientid: ""
       },
       searchInput: ""
     };
@@ -107,11 +81,11 @@ export default {
   methods: {
     async handleEdit() {
       try {
-        if (this.patient === "") {
+        if (this.searchInput === "") {
           alert("Nenhum paciente para atualizar");
           return;
         }
-        const res = await api.editPatient(this.searchInput, this.patient);
+        const res = await api.editPatient(this.patient);
         alert("Paciente atualizado");
         this.patient = "";
       } catch (err) {
@@ -135,5 +109,30 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+.edit-patient {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    color: white;
+  }
+
+  form {
+    width: 50%;
+    margin-top: 50px;
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    button {
+      background: #63f5b0;
+    }
+  }
+}
 </style>

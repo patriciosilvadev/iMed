@@ -4,6 +4,7 @@ import Index from '@/views/Index';
 import PatientArea from '@/views/PatientArea';
 import CreatePatient from '@/views/CreatePatient';
 import EditPatient from '@/views/EditPatient';
+import PatientList from '@/views/PatientList';
 
 Vue.use(Router);
 
@@ -25,6 +26,7 @@ export default new Router({
       name: 'CreatePatient',
       component: CreatePatient
     },
-    { path: '/edit-patient', name: 'EditPatient', component: EditPatient }
+    { path: '/edit-patient', name: 'EditPatient', component: EditPatient },
+    { path: '/patient-list', name: 'PatientList', component: PatientList }
   ]
 });

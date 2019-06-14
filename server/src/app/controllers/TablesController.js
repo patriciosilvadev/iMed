@@ -8,7 +8,8 @@ class TablesController {
         cpf varchar(11) NOT NULL UNIQUE,
         personName varchar(50) NOT NULL,
         birth date,
-        sex varchar(1)
+        sex varchar(1),
+        status varchar(50)
       )`;
     try {
       const res = await pool.query(person);
@@ -100,7 +101,7 @@ class TablesController {
       Prontuario (
         prontuarioid SERIAL PRIMARY KEY UNIQUE,
         patientid int REFERENCES Patient(patientid),
-        doctorid int REFERENCES Doctor(doctorid),
+        nurseid int REFERENCES Nurse(nurseid),
         temperatura real,
         pressao real,
         sintomas varchar(200)
@@ -122,6 +123,7 @@ class TablesController {
         nurseid int REFERENCES Nurse(nurseid),
         receptionistid int REFERENCES Receptionist(receptionistid),
         patientid int REFERENCES Patient(patientid),
+        prontuarioid int REFERENCES Prontuario(prontuarioid),
         datainicio date,
         datafim date
       )`;
@@ -139,6 +141,8 @@ class TablesController {
       Procedure (
         procedureid SERIAL PRIMARY KEY UNIQUE,
         procedurename varchar(50),
+        patientid int REFERENCES Patient(patientid),
+        nurseid int REFERENCES Nurse(nurseid),
         path varchar(50)
       )`;
     try {
@@ -150,10 +154,26 @@ class TablesController {
     }
   }
 
+  async createEncaminhamento(request, response) {
+    const encaminhamento = `CREATE TABLE IF NOT EXISTS
+      Encaminhamento (
+        encaminhamentoid SERIAL PRIMARY KEY UNIQUE,
+        treatmentid int REFERENCES Treatment(treatmentid),
+        procedureid int REFERENCES Procedure(procedureid)
+      )`;
+    try {
+      const res = await pool.query(encaminhamento);
+      response.status(200).json(res);
+    } catch (err) {
+      console.log(err);
+      response.status(500).json(err);
+    }
+  }
+
   async insertPatient(request, response) {
     const transaction = `
     BEGIN;
-    INSERT INTO Person (personid, cpf, personname, birth, sex) VALUES (DEFAULT, 2424, 'emanuel', '03/10/1993', 'M');
+    INSERT INTO Person (personid, cpf, personname, birth, sex, status) VALUES (DEFAULT, 2424, 'emanuel', '03/10/1993', 'M');
     INSERT INTO Patient (healthplan, patientid) VALUES ('Unimed', (SELECT personid FROM Person WHERE cpf='2424'));
     COMMIT;
     `;
@@ -223,7 +243,7 @@ class TablesController {
 
   async insertProntuario(request, response) {
     const transaction = `
-    INSERT INTO Prontuario (prontuarioid, patientid, doctorid, temperatura, pressao, sintomas) VALUES (DEFAULT, (SELECT personid FROM Person WHERE cpf='2424'), (SELECT personid FROM Person WHERE cpf='456'), 39, 17/9, 'Dengue');
+    INSERT INTO Prontuario (prontuarioid, patientid, nurseid, temperatura, pressao, sintomas) VALUES (DEFAULT, (SELECT personid FROM Person WHERE cpf='123'), (SELECT personid FROM Person WHERE cpf='789'), 39, 17.9, 'Febre');
     `;
     try {
       const res = await pool.query(transaction);
@@ -237,15 +257,16 @@ class TablesController {
 
   async insertAtendimento(request, response) {
     const transaction = `
-    INSERT INTO Treatment (treatmentid, doctorid, nurseid, receptionistid, patientid, datainicio, datafim) VALUES 
+    INSERT INTO Treatment (treatmentid, doctorid, nurseid, receptionistid, patientid, prontuarioid, datainicio, datafim) VALUES 
       (
         DEFAULT, 
         (SELECT personid FROM Person WHERE cpf='456'),
         (SELECT personid FROM Person WHERE cpf='789'),
         (SELECT personid FROM Person WHERE cpf='999'),
         (SELECT personid FROM Person WHERE cpf='123'),
-        '12/06/2019',
-        '12/06/2019'
+        (SELECT prontuarioid FROM Prontuario pront, Person p WHERE p.cpf='123' and p.personid = pront.patientid ORDER BY prontuarioid DESC LIMIT 1),
+        '11/06/2019',
+        '11/06/2019'
       );
     `;
     try {
@@ -260,13 +281,24 @@ class TablesController {
 
   async insertProcedure(request, response) {
     const transaction = `
-    INSERT INTO Procedure (procedureid, patientid, procedurename, path) VALUES 
-      (
-        DEFAULT, 
-        (SELECT personid FROM Person WHERE cpf='123'),
-        'Raio X',
-        'C:/Arquivos/Procedimentos'
-      );
+    INSERT INTO Procedure (procedureid, procedurename, patientid, nurseid, path) VALUES (DEFAULT, 'Exame de sangue', (SELECT personid FROM Person WHERE cpf='123'), (SELECT personid FROM Person WHERE cpf='789'), 'C:/Arquivos/Procedimentos')
+    `;
+    try {
+      const res = await pool.query(transaction);
+      console.log(res);
+      response.status(200).json(res[1].rows);
+    } catch (err) {
+      console.log(err);
+      response.status(500).json(err);
+    }
+  }
+
+  async inserEncaminhamento(request, response) {
+    const transaction = `
+    INSERT INTO Encaminhamento (encaminhamentoid, treatmentid, procedureid) VALUES (DEFAULT, 
+      (SELECT treatmentid FROM Treatment t, Person p WHERE p.cpf = '123' and p.personid = t.patientid ORDER BY treatmentid DESC LIMIT 1),
+      (SELECT procedureid FROM Procedure t, Person p WHERE p.cpf = '123' and p.personid = t.patientid ORDER BY procedureid DESC LIMIT 1)
+    )
     `;
     try {
       const res = await pool.query(transaction);

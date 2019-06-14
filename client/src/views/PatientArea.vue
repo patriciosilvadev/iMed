@@ -3,8 +3,8 @@
     <h1>Área de gerenciamento de pacientes</h1>
     <div class="cards">
       <menu-card :titulo="'Cadastrar'" :url="'CreatePatient'" :icone="'user'"/>
-      <menu-card :titulo="'Editar/Remover'" :url="'Funcionarios'" :icone="'edit'"/>
-      <menu-card :titulo="'Listar todos os pacientes'" :url="'Funcionarios'" :icone="'users'"/>
+      <menu-card :titulo="'Editar/Remover'" :url="'EditPatient'" :icone="'edit'"/>
+      <menu-card :titulo="'Listar todos os pacientes'" :url="'PatientList'" :icone="'users'"/>
       <menu-card :titulo="'Ficha de atendimento'" :url="'Funcionarios'" :icone="'address-card'"/>
     </div>
   </div>

@@ -10,8 +10,12 @@ export default {
     let service = url.SERVER_IP + `/patient/${cpf}`;
     return axios.get(service);
   },
-  editPatient(cpf, patient) {
-    let service = url.SERVER_IP + `/patient/${cpf}`;
+  editPatient(patient) {
+    let service = url.SERVER_IP + `/patient/${patient.patienid}`;
     return axios.put(service, patient);
+  },
+  getPatients() {
+    let service = url.SERVER_IP + '/patient';
+    return axios.get(service);
   }
 };
