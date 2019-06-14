@@ -10,4 +10,11 @@ routes.get('/patient', controllers.PatientController.getPatients);
 routes.get('/patient/:cpf', controllers.PatientController.getPatient);
 routes.put('/patient/:cpf', controllers.PatientController.editPatient);
 
+routes.post('/receptionist', controllers.EmployeeController.insertReceptionist);
+routes.get('/receptionist', controllers.EmployeeController.getReceptionists);
+routes.post('/doctor', controllers.EmployeeController.inserDoctor);
+routes.get('/doctor', controllers.EmployeeController.getDoctors);
+routes.post('/nurse', controllers.EmployeeController.insertNurse);
+routes.get('/nurse', controllers.EmployeeController.getNurses);
+
 module.exports = routes;

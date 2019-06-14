@@ -73,7 +73,8 @@ export default {
         sex: "",
         cpf: "",
         healthplan: "",
-        patientid: ""
+        patientid: "",
+        status: ""
       },
       searchInput: ""
     };

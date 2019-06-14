@@ -32,10 +32,18 @@ class PatientController {
   }
 
   async editPatient(request, response) {
-    const { personname, cpf, sex, healthplan, birth, patientid } = request.body;
+    const {
+      personname,
+      cpf,
+      sex,
+      healthplan,
+      birth,
+      patientid,
+      status
+    } = request.body;
     const transaction = `
     UPDATE Patient SET healthplan = '${healthplan}' WHERE patientid = ${patientid};
-    UPDATE Person SET personname = '${personname}', cpf = ${cpf}, birth = '${birth}', sex = '${sex}' WHERE personid = ${patientid};
+    UPDATE Person SET personname = '${personname}', cpf = ${cpf}, birth = '${birth}', sex = '${sex}', status = '${status}' WHERE personid = ${patientid};
     `;
     try {
       const res = await pool.query(transaction);

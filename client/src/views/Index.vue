@@ -3,7 +3,7 @@
     <h1>Med System</h1>
     <div class="cards">
       <menu-card :titulo="'Gerenciar pacientes'" :url="'PatientArea'" :icone="'user'"/>
-      <menu-card :titulo="'Gerenciar funcionários'" :url="'Funcionarios'" :icone="'users'"/>
+      <menu-card :titulo="'Gerenciar funcionários'" :url="'EmployeeArea'" :icone="'users'"/>
     </div>
   </div>
 </template>
