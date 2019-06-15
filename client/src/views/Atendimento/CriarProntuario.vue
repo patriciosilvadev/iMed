@@ -22,8 +22,48 @@
         </ul>
       </div>
     </div>
-    <div>
-      
+    <div class="formulario">
+      <form @submit.prevent="handleEdit">
+        <custom-input
+          :name="'nome'"
+          :label="'Nome'"
+          :value="patient.personname"
+          @inputValue="patient.personname = $event.value"
+        />
+        <custom-input
+          :name="'nascimento'"
+          :label="'Data de nascimento'"
+          :value="patient.birth"
+          @inputValue="patient.birth = $event.value"
+        />
+        <custom-input
+          :name="'sexo'"
+          :label="'Sexo'"
+          :value="patient.sex"
+          @inputValue="patient.sex = $event.value"
+        />
+        <custom-input
+          :name="'plano'"
+          :label="'Plano'"
+          :value="patient.healthplan"
+          @inputValue="patient.healthplan = $event.value"
+        />
+        <custom-input
+          :name="'cpf'"
+          :label="'CPF'"
+          :value="patient.cpf"
+          @inputValue="patient.cpf = $event.value"
+        />
+        <custom-input
+          :name="'status'"
+          :label="'Status'"
+          :value="patient.status"
+          @inputValue="patient.status = $event.value"
+        />
+        <div class="buttons">
+          <button type="submit">Editar</button>
+        </div>
+      </form>
     </div>
   </div>
 </template>
