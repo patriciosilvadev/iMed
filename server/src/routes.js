@@ -29,4 +29,9 @@ routes.get('/nurse', controllers.EmployeeController.getNurses);
 routes.get('/nurse/:cpf', controllers.EmployeeController.getNurse);
 routes.put('/nurse/:cpf', controllers.EmployeeController.editNurse);
 
+routes.get(
+  '/patients-triagem',
+  controllers.ProntuarioController.getPatientsTriagem
+);
+
 module.exports = routes;

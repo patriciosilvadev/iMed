@@ -5,7 +5,7 @@ class PatientController {
     const { personname, cpf, sex, healthplan, birth } = request.body;
     const transaction = `
     BEGIN;
-    INSERT INTO Person (personid, cpf, personname, birth, sex, status) VALUES (DEFAULT, ${cpf}, '${personname}', '${birth}', '${sex}', 'Ativo');
+    INSERT INTO Person (personid, cpf, personname, birth, sex, status) VALUES (DEFAULT, ${cpf}, '${personname}', '${birth}', '${sex}', 'Aguardando triagem');
     INSERT INTO Patient (healthplan, patientid) VALUES ('${healthplan}', (SELECT personid FROM Person WHERE cpf='${cpf}'));
     COMMIT;
     `;
