@@ -4,6 +4,11 @@
     <div class="cards">
       <menu-card :titulo="'Gerenciar pacientes'" :url="'PatientArea'" :icone="'user'"/>
       <menu-card :titulo="'Gerenciar funcionários'" :url="'EmployeeArea'" :icone="'users'"/>
+      <menu-card
+        :titulo="'Gerenciar atendimento'"
+        :url="'AreaAtendimento'"
+        :icone="'address-card'"
+      />
     </div>
   </div>
 </template>
@@ -35,10 +40,12 @@ export default {
 
   .cards {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     width: 100%;
     .menu-card {
       width: 45%;
+      margin-bottom: 50px;
       h2 {
         font-size: 25px;
       }

@@ -13,6 +13,8 @@ import EmployeeList from '@/views/Employee/EmployeeList';
 import EditReceptionist from '@/views/Employee/EditReceptionist';
 import EditDoctor from '@/views/Employee/EditDoctor';
 import EditNurse from '@/views/Employee/EditNurse';
+import AreaAtendimento from '@/views/Atendimento/AreaAtendimento';
+import CriarProntuario from '@/views/Atendimento/CriarProntuario';
 
 Vue.use(Router);
 
@@ -67,6 +69,16 @@ export default new Router({
       path: '/edit-nurse',
       name: 'EditNurse',
       component: EditNurse
+    },
+    {
+      path: '/area-atendimento',
+      name: 'AreaAtendimento',
+      component: AreaAtendimento
+    },
+    {
+      path: '/criar-prontuario',
+      name: 'CriarProntuario',
+      component: CriarProntuario
     }
   ]
 });
