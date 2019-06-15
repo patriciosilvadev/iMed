@@ -10,6 +10,9 @@ import CreateReceptionist from '@/views/Employee/CreateReceptionist';
 import CreateDoctor from '@/views/Employee/CreateDoctor';
 import CreateNurse from '@/views/Employee/CreateNurse';
 import EmployeeList from '@/views/Employee/EmployeeList';
+import EditReceptionist from '@/views/Employee/EditReceptionist';
+import EditDoctor from '@/views/Employee/EditDoctor';
+import EditNurse from '@/views/Employee/EditNurse';
 
 Vue.use(Router);
 
@@ -49,6 +52,21 @@ export default new Router({
       name: 'CreateNurse',
       component: CreateNurse
     },
-    { path: '/employee-list', name: 'EmployeeList', component: EmployeeList }
+    { path: '/employee-list', name: 'EmployeeList', component: EmployeeList },
+    {
+      path: '/edit-receptionist',
+      name: 'EditReceptionist',
+      component: EditReceptionist
+    },
+    {
+      path: '/edit-doctor',
+      name: 'EditDoctor',
+      component: EditDoctor
+    },
+    {
+      path: '/edit-nurse',
+      name: 'EditNurse',
+      component: EditNurse
+    }
   ]
 });

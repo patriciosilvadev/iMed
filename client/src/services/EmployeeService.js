@@ -14,12 +14,28 @@ export default {
     let service = url.SERVER_IP + '/nurse';
     return axios.post(service, patient);
   },
-  searchPatient(cpf) {
-    let service = url.SERVER_IP + `/patient/${cpf}`;
+  searchReceptionist(cpf) {
+    let service = url.SERVER_IP + `/receptionist/${cpf}`;
     return axios.get(service);
   },
-  editPatient(patient) {
-    let service = url.SERVER_IP + `/patient/${patient.patienid}`;
+  editReceptionist(patient) {
+    let service = url.SERVER_IP + `/receptionist/${patient.personid}`;
+    return axios.put(service, patient);
+  },
+  searchDoctor(cpf) {
+    let service = url.SERVER_IP + `/doctor/${cpf}`;
+    return axios.get(service);
+  },
+  editDoctor(patient) {
+    let service = url.SERVER_IP + `/doctor/${patient.personid}`;
+    return axios.put(service, patient);
+  },
+  searchNurse(cpf) {
+    let service = url.SERVER_IP + `/nurse/${cpf}`;
+    return axios.get(service);
+  },
+  editNurse(patient) {
+    let service = url.SERVER_IP + `/nurse/${patient.personid}`;
     return axios.put(service, patient);
   },
   getDoctors() {

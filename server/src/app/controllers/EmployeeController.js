@@ -136,6 +136,121 @@ class EmployeeController {
       response.status(500).json(err);
     }
   }
+
+  async getReceptionist(request, response) {
+    const cpf = request.params.cpf;
+    const query = `SELECT * FROM Person per, Employee emp, Receptionist rec WHERE per.cpf = '${cpf}' and per.personid = emp.employeeid and emp.employeeid = rec.receptionistid ORDER BY per.personid DESC`;
+    try {
+      const res = await pool.query(query);
+      response.status(200).json(res.rows[0]);
+    } catch (err) {
+      console.log(err);
+      response.status(500).json(err);
+    }
+  }
+
+  async editReceptionist(request, response) {
+    const {
+      personname,
+      cpf,
+      sex,
+      setor,
+      birth,
+      personid,
+      status,
+      login,
+      salario
+    } = request.body;
+    const transaction = `
+    UPDATE Receptionist SET login = '${login}' WHERE receptionistid = ${personid};
+    UPDATE Employee SET setor = '${setor}', salario = ${salario} WHERE employeeid = ${personid};
+    UPDATE Person SET personname = '${personname}', cpf = ${cpf}, birth = '${birth}', sex = '${sex}', status = '${status}' WHERE personid = ${personid};
+    `;
+    try {
+      const res = await pool.query(transaction);
+      response.status(200).json(res);
+    } catch (err) {
+      console.log(err);
+      response.status(500).json(err);
+    }
+  }
+
+  async getDoctor(request, response) {
+    const cpf = request.params.cpf;
+    const query = `SELECT * FROM Person per, Employee emp, Doctor doc WHERE per.cpf = '${cpf}' and per.personid = emp.employeeid and emp.employeeid = doc.doctorid ORDER BY per.personid DESC`;
+    try {
+      const res = await pool.query(query);
+      response.status(200).json(res.rows[0]);
+    } catch (err) {
+      console.log(err);
+      response.status(500).json(err);
+    }
+  }
+
+  async editDoctor(request, response) {
+    const {
+      personname,
+      cpf,
+      sex,
+      setor,
+      birth,
+      personid,
+      status,
+      crm,
+      especialidade,
+      salario
+    } = request.body;
+    const transaction = `
+    UPDATE Doctor SET crm = '${crm}', especialidade = '${especialidade}' WHERE doctorid = ${personid};
+    UPDATE Employee SET setor = '${setor}', salario = ${salario} WHERE employeeid = ${personid};
+    UPDATE Person SET personname = '${personname}', cpf = ${cpf}, birth = '${birth}', sex = '${sex}', status = '${status}' WHERE personid = ${personid};
+    `;
+    try {
+      const res = await pool.query(transaction);
+      response.status(200).json(res);
+    } catch (err) {
+      console.log(err);
+      response.status(500).json(err);
+    }
+  }
+
+  async getNurse(request, response) {
+    const cpf = request.params.cpf;
+    const query = `SELECT * FROM Person per, Employee emp, Nurse nur WHERE per.cpf = '${cpf}' and per.personid = emp.employeeid and emp.employeeid = nur.nurseid ORDER BY per.personid DESC`;
+    try {
+      const res = await pool.query(query);
+      response.status(200).json(res.rows[0]);
+    } catch (err) {
+      console.log(err);
+      response.status(500).json(err);
+    }
+  }
+
+  async editNurse(request, response) {
+    const {
+      personname,
+      cpf,
+      sex,
+      setor,
+      birth,
+      personid,
+      status,
+      cofen,
+      salario
+    } = request.body;
+    const transaction = `
+    UPDATE Nurse SET cofen = '${cofen}' WHERE nurseid = ${personid};
+    UPDATE Employee SET setor = '${setor}', salario = ${salario} WHERE employeeid = ${personid};
+    UPDATE Person SET personname = '${personname}', cpf = ${cpf}, birth = '${birth}', sex = '${sex}', status = '${status}' WHERE personid = ${personid};
+    `;
+    try {
+      const res = await pool.query(transaction);
+      response.status(200).json(res);
+    } catch (err) {
+      console.log(err);
+      response.status(500).json(err);
+    }
+  }
 }
 
 module.exports = new EmployeeController();

@@ -6,7 +6,9 @@
       <menu-card :titulo="'Cadastrar Médico'" :url="'CreateDoctor'" :icone="'user'"/>
       <menu-card :titulo="'Cadastrar Enfermeira'" :url="'CreateNurse'" :icone="'user'"/>
       <menu-card :titulo="'Listar todos os funcionários'" :url="'EmployeeList'" :icone="'users'"/>
-      <menu-card :titulo="'Editar/Remover'" :url="'EditEmployee'" :icone="'edit'"/>
+      <menu-card :titulo="'Editar atendente'" :url="'EditReceptionist'" :icone="'edit'"/>
+      <menu-card :titulo="'Editar médico'" :url="'EditDoctor'" :icone="'edit'"/>
+      <menu-card :titulo="'Editar enfermeira'" :url="'EditNurse'" :icone="'edit'"/>
     </div>
   </div>
 </template>
