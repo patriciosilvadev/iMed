@@ -44,5 +44,14 @@ routes.get(
 
 routes.post('/atendimento', controllers.AtendimentoController.insertAtendimento);
 
+routes.get(
+  '/patients-procedimento',
+  controllers.ProcedimentoController.getPatientsProcedimento
+);
+
+routes.post('/procedimento', controllers.ProcedimentoController.insertProcedimento);
+routes.get('/procedimento/:personid', controllers.ProcedimentoController.getProcedimento);
+routes.put('/procedimento/:procedureid', controllers.ProcedimentoController.editProcedimento);
+
 
 module.exports = routes;

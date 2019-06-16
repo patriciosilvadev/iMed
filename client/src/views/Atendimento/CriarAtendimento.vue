@@ -70,12 +70,12 @@
           <button type="submit">Encerrar atendimento</button>
         </div>
       </form>
-      <form @submit.prevent="setProntuario">
+      <form @submit.prevent="createProcedimento">
         <custom-input
           :name="'procedimento'"
           :label="'Procedimento'"
-          :value="procedimento"
-          @inputValue="procedimento = $event.value"
+          :value="procedimento.procedurename"
+          @inputValue="procedimento.procedurename = $event.value"
         />
         <div class="buttons">
           <button type="submit">Enviar para procedimento</button>
@@ -92,6 +92,7 @@ import CustomButton from "@/components/CustomButton";
 import api from "@/services/EmployeeService";
 import api2 from "@/services/AtendimentoService";
 import api3 from "@/services/ProntuarioService";
+import api4 from "@/services/ProcedimentoService";
 
 export default {
   components: {
@@ -114,7 +115,10 @@ export default {
       prontuario: '',
       patient: '',
       responsavel: '',
-      procedimento: ''
+      procedimento: {
+        patientid: '',
+        procedurename: ''
+      }
     };
   },
   methods: {
@@ -157,6 +161,17 @@ export default {
     async setAtendimento() {
       try {
         const res = await api2.createAtendimento(this.atendimento);
+        alert("Deu certo!!!");
+        location.reload();
+      } catch (err) {
+        console.log(err.response);
+        alert("Deu erro!!!");
+      }
+    },
+    async createProcedimento() {
+      try {
+        this.procedimento.patientid = this.patient.personid
+        const res = await api4.createProcedimento(this.procedimento);
         alert("Deu certo!!!");
         location.reload();
       } catch (err) {

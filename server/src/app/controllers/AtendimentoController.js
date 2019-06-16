@@ -2,7 +2,7 @@ const { pool } = require('../../config/database');
 
 class AtendimentoController {
   async getPatientsAtendimento(request, response) {
-    const query = `SELECT per.personid, per.personname, per.status FROM Person per, Patient pat WHERE per.personid = pat.patientid AND per.status = 'Aguardando atendimento' ORDER BY per.personid ASC`;
+    const query = `SELECT DISTINCT per.personid, per.personname, per.status FROM Person per, Patient pat WHERE per.personid = pat.patientid AND per.status = 'Aguardando atendimento' OR per.status = 'Procedimento realizado' ORDER BY per.personid ASC`;
     try {
       const res = await pool.query(query);
       response.status(200).json(res);

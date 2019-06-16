@@ -16,6 +16,7 @@ import EditNurse from '@/views/Employee/EditNurse';
 import AreaAtendimento from '@/views/Atendimento/AreaAtendimento';
 import CriarProntuario from '@/views/Atendimento/CriarProntuario';
 import CriarAtendimento from '@/views/Atendimento/CriarAtendimento';
+import CriarProcedimento from '@/views/Atendimento/CriarProcedimento';
 
 Vue.use(Router);
 
@@ -85,6 +86,11 @@ export default new Router({
       path: '/criar-atendimento',
       name: 'CriarAtendimento',
       component: CriarAtendimento
+    },
+    {
+      path: '/criar-procedimento',
+      name: 'CriarProcedimento',
+      component: CriarProcedimento
     }
   ]
 });

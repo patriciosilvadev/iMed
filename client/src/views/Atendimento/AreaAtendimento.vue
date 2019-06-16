@@ -3,8 +3,8 @@
     <h1>Área de atendimento</h1>
     <div class="cards">
       <menu-card :titulo="'Prontuário'" :url="'CriarProntuario'" :icone="'edit'"/>
-      <menu-card :titulo="'Atendimento'" :url="'CriarAtendimento'" :icone="'edit'"/>
-      <menu-card :titulo="'Listar todos os pacientes'" :url="'PatientList'" :icone="'users'"/>
+      <menu-card :titulo="'Atendimento'" :url="'CriarAtendimento'" :icone="'file-medical'"/>
+      <menu-card :titulo="'Procedimento'" :url="'CriarProcedimento'" :icone="'procedures'"/>
     </div>
   </div>
 </template>
