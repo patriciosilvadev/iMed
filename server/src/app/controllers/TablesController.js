@@ -84,7 +84,7 @@ class TablesController {
   async createReceptionist(request, response) {
     const receptionist = `CREATE TABLE IF NOT EXISTS
       Receptionist (
-        setor varchar(10),
+        login varchar(20),
 	      receptionistid int UNIQUE REFERENCES Employee(employeeid)
       )`;
     try {

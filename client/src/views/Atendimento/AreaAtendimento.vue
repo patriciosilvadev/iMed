@@ -2,8 +2,8 @@
   <div class="patient-area">
     <h1>Área de atendimento</h1>
     <div class="cards">
-      <menu-card :titulo="'Criar prontuário'" :url="'CriarProntuario'" :icone="'edit'"/>
-      <menu-card :titulo="'Editar/Remover'" :url="'EditPatient'" :icone="'edit'"/>
+      <menu-card :titulo="'Prontuário'" :url="'CriarProntuario'" :icone="'edit'"/>
+      <menu-card :titulo="'Atendimento'" :url="'CriarAtendimento'" :icone="'edit'"/>
       <menu-card :titulo="'Listar todos os pacientes'" :url="'PatientList'" :icone="'users'"/>
     </div>
   </div>

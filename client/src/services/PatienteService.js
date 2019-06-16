@@ -17,9 +17,5 @@ export default {
   getPatients() {
     let service = url.SERVER_IP + '/patient';
     return axios.get(service);
-  },
-  getPatientsTriagem() {
-    let service = url.SERVER_IP + '/patients-triagem';
-    return axios.get(service);
   }
 };

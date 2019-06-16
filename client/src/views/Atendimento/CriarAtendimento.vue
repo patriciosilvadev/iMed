@@ -1,9 +1,9 @@
 <template>
   <div class="patient-list">
-    <h1>Aguardando triagem</h1>
+    <h1>Aguardando atendimento</h1>
     <div class="funcionarios">
       <div class="pacientes">
-        <h2>Pacientes aguardando triagem</h2>
+        <h2>Pacientes aguardando atendimento</h2>
         <ul class="listagem">
           <li v-for="(patient, index) in patients" :key="index" @click="setPatient(patient)">
             <span>Nome: {{patient.personname}}</span>
@@ -11,18 +11,19 @@
           </li>
         </ul>
       </div>
-      <div class="enfermeiros">
-        <h2>Selecionar enfermeira</h2>
+      <div class="medicos">
+        <h2>Selecionar medico</h2>
         <ul class="listagem">
-          <li v-for="(nurse, index) in nurses" :key="index" @click="setNurse(nurse)">
-            <span>Nome: {{nurse.personname}}</span>
-            <span>Cofen: {{nurse.cofen}}</span>
+          <li v-for="(doctor, index) in doctors" :key="index" @click="setDoctor(doctor)">
+            <span>Nome: {{doctor.personname}}</span>
+            <span>Especialidade: {{doctor.especialidade}}</span>
+            <span>CRM: {{doctor.crm}}</span>
           </li>
         </ul>
       </div>
     </div>
     <div class="formulario">
-      <form @submit.prevent="setProntuario">
+      <form @submit.prevent="setAtendimento">
         <custom-input
           :name="'nome'"
           :label="'Nome'"
@@ -49,12 +50,35 @@
         />
         <custom-input
           :name="'responsavel'"
-          :label="'Enfermeira responsavel'"
+          :label="'Medico responsavel'"
           :value="responsavel.personname"
           @inputValue="responsavel.personname = $event.value"
         />
+        <custom-input
+          :name="'inicio'"
+          :label="'Data inicio'"
+          :value="atendimento.datainicio"
+          @inputValue="atendimento.datainicio = $event.value"
+        />
+        <custom-input
+          :name="'fim'"
+          :label="'Data fim'"
+          :value="atendimento.datafim"
+          @inputValue="atendimento.datafim = $event.value"
+        />
         <div class="buttons">
-          <button type="submit">Enviar para atendimento</button>
+          <button type="submit">Encerrar atendimento</button>
+        </div>
+      </form>
+      <form @submit.prevent="setProntuario">
+        <custom-input
+          :name="'procedimento'"
+          :label="'Procedimento'"
+          :value="procedimento"
+          @inputValue="procedimento = $event.value"
+        />
+        <div class="buttons">
+          <button type="submit">Enviar para procedimento</button>
         </div>
       </form>
     </div>
@@ -66,7 +90,8 @@ import CustomInput from "@/components/CustomInput";
 import CustomButton from "@/components/CustomButton";
 
 import api from "@/services/EmployeeService";
-import api2 from "@/services/ProntuarioService";
+import api2 from "@/services/AtendimentoService";
+import api3 from "@/services/ProntuarioService";
 
 export default {
   components: {
@@ -76,46 +101,62 @@ export default {
   data() {
     return {
       patients: [],
-      nurses: [],
-      prontuario: {
-        patientid: '',
-        nurseid: '',
-        temperatura: '',
-        pressao: '',
-        sintomas: ''
+      doctors: [],
+      atendimento: {
+          patientid: '',
+          doctorid: '',
+          nurseid: '',
+          receptionistid: '',
+          prontuarioid: '',
+          datainicio: '',
+          datafim: ''
       },
+      prontuario: '',
       patient: '',
-      responsavel: ''
+      responsavel: '',
+      procedimento: ''
     };
   },
   methods: {
     async getPatients() {
       try {
-        const res = await api2.getPatientsTriagem();
+        const res = await api2.getPatientsAtendimento();
         this.patients = res.data.rows;
       } catch (err) {
         console.log(err.response);
       }
     },
-    async getNurses() {
+    async getDoctors() {
       try {
-        const res = await api.getNurses();
-        this.nurses = res.data.rows;
+        const res = await api.getDoctors();
+        this.doctors = res.data.rows;
+      } catch (err) {
+        console.log(err.response);
+      }
+    },
+    async getProntuario(patient) {
+      try {
+        const res = await api3.getProntuario(patient);
+        this.prontuario = res.data.rows[0];
+        this.atendimento.prontuarioid = this.prontuario.prontuarioid
+        this.atendimento.nurseid = this.prontuario.nurseid
       } catch (err) {
         console.log(err.response);
       }
     },
     setPatient(patient) {
-      this.prontuario.patientid = patient.personid
+      this.atendimento.patientid = patient.personid
       this.patient = patient
+      this.getProntuario(this.patient)
     },
-    setNurse(nurse) {
-      this.prontuario.nurseid = nurse.personid
-      this.responsavel = nurse
+    setDoctor(doctor) {
+
+      this.atendimento.doctorid = doctor.personid
+      this.responsavel = doctor
     },
-    async setProntuario() {
+    async setAtendimento() {
       try {
-        const res = await api2.createProntuario(this.prontuario);
+        const res = await api2.createAtendimento(this.atendimento);
         alert("Deu certo!!!");
         location.reload();
       } catch (err) {
@@ -126,7 +167,7 @@ export default {
   },
   mounted() {
     this.getPatients();
-    this.getNurses();
+    this.getDoctors();
   }
 };
 </script>

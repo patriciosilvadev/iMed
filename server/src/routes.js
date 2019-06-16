@@ -3,7 +3,7 @@ const controllers = require('./app/controllers');
 const routes = express.Router();
 // const path = require('path');
 
-routes.get('/create-tables', controllers.TablesController.inserEncaminhamento);
+routes.get('/create-tables', controllers.TablesController.createEncaminhamento);
 
 routes.post('/patient', controllers.PatientController.insertPatient);
 routes.get('/patient', controllers.PatientController.getPatients);
@@ -33,5 +33,16 @@ routes.get(
   '/patients-triagem',
   controllers.ProntuarioController.getPatientsTriagem
 );
+
+routes.post('/prontuario', controllers.ProntuarioController.insertProntuario);
+routes.get('/prontuario/:personid', controllers.ProntuarioController.getProntuario);
+
+routes.get(
+  '/patients-atendimento',
+  controllers.AtendimentoController.getPatientsAtendimento
+);
+
+routes.post('/atendimento', controllers.AtendimentoController.insertAtendimento);
+
 
 module.exports = routes;
