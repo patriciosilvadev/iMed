@@ -40,9 +40,10 @@ class ProcedimentoController {
   }
 
   async editProcedimento(request, response) {
-    const { procedureid, patientid, nurseid, path  } = request.body
+    const { procedureid, patientid, nurseid, path, treatmentid  } = request.body
     const transaction = `
     UPDATE Procedure SET nurseid = ${nurseid}, path = '${path}' WHERE procedureid = ${procedureid};
+    INSERT INTO Encaminhamento (encaminhamentoid, treatmentid, procedureid) VALUES (DEFAULT, ${treatmentid}, (SELECT procedureid FROM Procedure p WHERE p.patientid = ${patientid} ORDER BY procedureid DESC LIMIT 1));
     UPDATE Person SET status = 'Procedimento realizado' WHERE personid = ${patientid};
     `;
     try {

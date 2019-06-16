@@ -6,8 +6,16 @@ export default {
     let service = url.SERVER_IP + '/patients-atendimento';
     return axios.get(service);
   },
-  createAtendimento(atendimento) {
-    let service = url.SERVER_IP + '/atendimento';
+  endAtendimento(atendimento) {
+    let service = url.SERVER_IP + `/atendimento/${atendimento.treatmentid}`;
+    return axios.put(service, atendimento);
+  },
+  gerarAtendimento(atendimento) {
+    let service = url.SERVER_IP + '/gerar-atendimento';
     return axios.post(service, atendimento);
+  },
+  getAtendimento(patient) {
+    let service = url.SERVER_IP + `/atendimento/${patient.personid}`;
+    return axios.get(service);
   }
 };

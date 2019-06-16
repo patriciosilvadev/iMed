@@ -61,6 +61,7 @@ import CustomButton from "@/components/CustomButton";
 
 import api from "@/services/EmployeeService";
 import api2 from "@/services/ProcedimentoService";
+import api3 from "@/services/AtendimentoService";
 
 export default {
   components: {
@@ -77,7 +78,8 @@ export default {
         procedureid: '',
         patientid: '',
         nurseid: '',
-        path: ''
+        path: '',
+        treatmentid: ''
       }
     };
   },
@@ -102,10 +104,19 @@ export default {
       this.procedimento.patientid = patient.personid
       this.patient = patient
       this.getProcedimento()
+      this.getAtendimento()
     },
     setNurse(nurse) {
       this.procedimento.nurseid = nurse.personid
       this.responsavel = nurse
+    },
+    async getAtendimento() {
+      try {
+        const res = await api3.getAtendimento(this.patient);
+        this.procedimento.treatmentid = res.data.rows[0].treatmentid;
+      } catch (err) {
+        console.log(err.response);
+      }
     },
     async getProcedimento() {
       try {

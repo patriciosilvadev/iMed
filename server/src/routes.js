@@ -43,6 +43,9 @@ routes.get(
 );
 
 routes.post('/atendimento', controllers.AtendimentoController.insertAtendimento);
+routes.get('/atendimento/:personid', controllers.AtendimentoController.getAtendimento);
+routes.put('/atendimento/:treatmentid', controllers.AtendimentoController.endAtendimento);
+routes.post('/gerar-atendimento', controllers.AtendimentoController.createAtendimento);
 
 routes.get(
   '/patients-procedimento',

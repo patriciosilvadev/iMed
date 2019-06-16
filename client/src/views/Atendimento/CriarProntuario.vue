@@ -67,6 +67,7 @@ import CustomButton from "@/components/CustomButton";
 
 import api from "@/services/EmployeeService";
 import api2 from "@/services/ProntuarioService";
+import api3 from "@/services/AtendimentoService";
 
 export default {
   components: {
@@ -83,6 +84,15 @@ export default {
         temperatura: '',
         pressao: '',
         sintomas: ''
+      },
+      atendimento: {
+        patientid: '',
+        doctorid: '',
+        nurseid: '',
+        receptionistid: '',
+        prontuarioid: '',
+        datainicio: '',
+        datafim: ''
       },
       patient: '',
       responsavel: ''
@@ -107,20 +117,32 @@ export default {
     },
     setPatient(patient) {
       this.prontuario.patientid = patient.personid
+      this.atendimento.patientid = patient.personid
       this.patient = patient
     },
     setNurse(nurse) {
       this.prontuario.nurseid = nurse.personid
+      this.atendimento.nurseid = nurse.personid
       this.responsavel = nurse
     },
     async setProntuario() {
       try {
         const res = await api2.createProntuario(this.prontuario);
+        const prontuario_res = await api2.getProntuario(this.patient);
+        this.atendimento.prontuarioid = prontuario_res.data.rows[0].prontuarioid
+        this.createAtendimento()
         alert("Deu certo!!!");
         location.reload();
       } catch (err) {
         console.log(err.response);
         alert("Deu erro!!!");
+      }
+    },
+    async createAtendimento() {
+      try {
+        const res = await api3.gerarAtendimento(this.atendimento);
+      } catch (err) {
+        console.log(err.response);
       }
     }
   },

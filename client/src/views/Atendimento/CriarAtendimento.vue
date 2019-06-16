@@ -103,21 +103,14 @@ export default {
     return {
       patients: [],
       doctors: [],
-      atendimento: {
-          patientid: '',
-          doctorid: '',
-          nurseid: '',
-          receptionistid: '',
-          prontuarioid: '',
-          datainicio: '',
-          datafim: ''
-      },
+      atendimento: '',
       prontuario: '',
       patient: '',
       responsavel: '',
       procedimento: {
         patientid: '',
-        procedurename: ''
+        procedurename: '',
+        treatmentid: ''
       }
     };
   },
@@ -142,25 +135,31 @@ export default {
       try {
         const res = await api3.getProntuario(patient);
         this.prontuario = res.data.rows[0];
-        this.atendimento.prontuarioid = this.prontuario.prontuarioid
-        this.atendimento.nurseid = this.prontuario.nurseid
+      } catch (err) {
+        console.log(err.response);
+      }
+    },
+    async getAtendimento() {
+      try {
+        const res = await api2.getAtendimento(this.patient, this.responsavel);
+        this.atendimento = res.data.rows[0];
       } catch (err) {
         console.log(err.response);
       }
     },
     setPatient(patient) {
-      this.atendimento.patientid = patient.personid
       this.patient = patient
       this.getProntuario(this.patient)
+      this.getAtendimento()
     },
     setDoctor(doctor) {
-
-      this.atendimento.doctorid = doctor.personid
       this.responsavel = doctor
+      this.getAtendimento()
     },
     async setAtendimento() {
       try {
-        const res = await api2.createAtendimento(this.atendimento);
+        this.atendimento.doctorid = this.responsavel.personid
+        const res = await api2.endAtendimento(this.atendimento);
         alert("Deu certo!!!");
         location.reload();
       } catch (err) {
@@ -171,6 +170,7 @@ export default {
     async createProcedimento() {
       try {
         this.procedimento.patientid = this.patient.personid
+        this.procedimento.treatmentid = this.atendimento.treatmentid
         const res = await api4.createProcedimento(this.procedimento);
         alert("Deu certo!!!");
         location.reload();

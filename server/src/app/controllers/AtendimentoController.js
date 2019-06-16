@@ -26,6 +26,49 @@ class AtendimentoController {
       response.status(500).json(err);
     }
   }
+
+  async endAtendimento(request, response) {
+    const { treatmentid, doctorid, nurseid, patientid, receptionistid, prontuarioid, datainicio, datafim } = request.body;
+    const transaction = `
+    UPDATE Treatment SET doctorid = ${doctorid}, nurseid = ${nurseid}, receptionistid = ${receptionistid}, patientid = ${patientid}, prontuarioid = ${prontuarioid}, datainicio = '${datainicio}', datafim = '${datafim}' WHERE treatmentid = ${treatmentid};
+    UPDATE Person SET status = 'Atendimento finalizado' WHERE personid = ${patientid};
+    `;
+    try {
+      const res = await pool.query(transaction);
+      response.status(200).json(res);
+    } catch (err) {
+      console.log(err);
+      response.status(500).json(err);
+    }
+  }
+
+  async getAtendimento(request, response) {
+    const { personid } = request.params;
+    const transaction = `
+    SELECT * FROM Treatment t WHERE t.patientid = ${personid} ORDER BY treatmentid DESC LIMIT 1
+    `;
+    try {
+      const res = await pool.query(transaction);
+      response.status(200).json(res);
+    } catch (err) {
+      console.log(err);
+      response.status(500).json(err);
+    }
+  }
+
+  async createAtendimento(request, response) {
+    const { nurseid, patientid, prontuarioid } = request.body;
+    const transaction = `
+    INSERT INTO Treatment (treatmentid, doctorid, nurseid, receptionistid, patientid, prontuarioid, datainicio, datafim) VALUES (DEFAULT, NULL, ${nurseid}, NULL, ${patientid}, ${prontuarioid}, NULL, NULL);
+    `;
+    try {
+      const res = await pool.query(transaction);
+      response.status(200).json(res);
+    } catch (err) {
+      console.log(err);
+      response.status(500).json(err);
+    }
+  }
 }
 
 module.exports = new AtendimentoController();
