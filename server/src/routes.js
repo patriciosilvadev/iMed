@@ -56,5 +56,9 @@ routes.post('/procedimento', controllers.ProcedimentoController.insertProcedimen
 routes.get('/procedimento/:personid', controllers.ProcedimentoController.getProcedimento);
 routes.put('/procedimento/:procedureid', controllers.ProcedimentoController.editProcedimento);
 
+routes.get('/historico-patient/:patientid', controllers.HistoricoController.getPatientAtendimentos);
+routes.get('/historico-doctor/:doctorid', controllers.HistoricoController.getDoctorAtendimentos);
+routes.get('/historico-nurse/:nurseid', controllers.HistoricoController.getNurseAtendimentos);
+
 
 module.exports = routes;

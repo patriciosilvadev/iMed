@@ -1,15 +1,10 @@
 <template>
   <div class="menu">
-    <h1>Med System</h1>
+    <h1>Historicos</h1>
     <div class="cards">
-      <menu-card :titulo="'Gerenciar pacientes'" :url="'PatientArea'" :icone="'user'"/>
-      <menu-card :titulo="'Gerenciar funcionários'" :url="'EmployeeArea'" :icone="'users'"/>
-      <menu-card
-        :titulo="'Gerenciar atendimento'"
-        :url="'AreaAtendimento'"
-        :icone="'address-card'"
-      />
-      <menu-card :titulo="'Visualizar historicos'" :url="'Historicos'" :icone="'address-book'"/>
+      <menu-card :titulo="'Historico do paciente'" :url="'HistoricoPaciente'" :icone="'address-book'"/>
+      <menu-card :titulo="'Historico do medico'" :url="'HistoricoDoctor'" :icone="'address-book'"/>
+      <menu-card :titulo="'Historico da enfermeira'" :url="'HistoricoNurse'" :icone="'address-book'"/>
     </div>
   </div>
 </template>
