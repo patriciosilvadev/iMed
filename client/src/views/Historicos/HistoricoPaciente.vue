@@ -109,8 +109,8 @@ export default {
 
   .listagem {
     margin-top: 50px;
-    height: 600px;
-    overflow: scroll;
+    height: 300px;
+    overflow: auto;
 
     li {
       display: flex;

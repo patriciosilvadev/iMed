@@ -59,8 +59,8 @@ export default {
   }
 
   .listagem {
-    height: 600px;
-    overflow: scroll;
+    height: 300px;
+    overflow: auto;
 
     li {
       display: flex;

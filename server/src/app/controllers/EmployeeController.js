@@ -115,7 +115,7 @@ class EmployeeController {
 
   async getDoctors(request, response) {
     const query =
-      'SELECT per.personid, per.cpf, per.personname, per.birth, per.sex, per.status, emp.setor, emp.salario, doc.crm, doc.especialidade FROM Person per, Employee emp, Doctor doc WHERE per.personid = emp.employeeid and emp.employeeid = doc.doctorid ORDER BY per.personid DESC';
+      `SELECT per.personid, per.cpf, per.personname, per.birth, per.sex, per.status, emp.setor, emp.salario, doc.crm, doc.especialidade FROM Person per, Employee emp, Doctor doc WHERE per.personid = emp.employeeid and emp.employeeid = doc.doctorid AND per.status != 'Inativo' ORDER BY per.personid DESC;`
     try {
       const res = await pool.query(query);
       response.status(200).json(res);
@@ -127,7 +127,7 @@ class EmployeeController {
 
   async getNurses(request, response) {
     const query =
-      'SELECT per.personid, per.cpf, per.personname, per.birth, per.sex, per.status, emp.setor, emp.salario, nur.cofen FROM Person per, Employee emp, Nurse nur WHERE per.personid = emp.employeeid and emp.employeeid = nur.nurseid ORDER BY per.personid DESC';
+      `SELECT per.personid, per.cpf, per.personname, per.birth, per.sex, per.status, emp.setor, emp.salario, nur.cofen FROM Person per, Employee emp, Nurse nur WHERE per.personid = emp.employeeid and emp.employeeid = nur.nurseid AND per.status != 'Inativo' ORDER BY per.personid DESC;`
     try {
       const res = await pool.query(query);
       response.status(200).json(res);
